@@ -2,6 +2,7 @@ import { QueryResult } from "pg";
 import pool from "../db"; 
 import { INSERT_USER, GET_USER_BY_USERNAME } from "./query";
 
+
 export function insert_driver(
     username: string,
     email: string,

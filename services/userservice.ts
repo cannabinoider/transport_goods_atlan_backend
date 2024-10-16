@@ -2,16 +2,25 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { insert_user, fetchUserByUsername } from "../models/usermodel";
 
+const JWT_SECRET = process.env.JWT_SECRET||"chotahathi";
+
+if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined in environment variables.");
+}
+
 export async function createUser(
     username: string,
     email: string,
     password: string,
     phone: string
-  ): Promise<any> {
+  ): Promise<{ user: any; token: string }> {
     const hashedPassword = await bcrypt.hash(password, 10);
+  
     const result = await insert_user(username, email, hashedPassword, phone);
-    return result.rows[0];
-}
+    const user = result.rows[0];
+    const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+    return { user, token };
+  }
 
 export async function getUserByUsername(username: string): Promise<{ existingUser: boolean; message: string }> {
     try {
@@ -32,11 +41,18 @@ export async function loginByUsername(username:string, password:string): Promise
         if(!user){
             throw new Error("user not found");
         }
+        if(user.role !== 'user'){
+            throw new Error("User role not matched");
+        }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if(!isPasswordValid){
             throw new Error("Incorrect password");
         }
-        return user;
+        const token = jwt.sign({userId: user.userid, role: user.role, userName: user.username, userEmail: user.email, userPhone: user.phone},
+            JWT_SECRET,{
+                expiresIn: '1h',
+        });
+        return {token};
     }
     catch(error:any){
         throw new Error (error.message);

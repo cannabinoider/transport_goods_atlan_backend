@@ -2,8 +2,9 @@ import  express  from "express";
 import cors from "cors";
 import { Request, Response } from "express";
 import pool from "./db";
-import user_routes from "./routes/user_routes"
-import driver_routes from "./routes/driver_routes"
+import user_routes from "./routes/user_routes";
+import driver_routes from "./routes/driver_routes";
+import admin_routes from "./routes/admin_routes";
 
 
 const app = express()
@@ -14,6 +15,7 @@ app.use(cors());
 
 app.use('/api/users',user_routes);
 app.use('/api/drivers',driver_routes);
+app.use('/api/admin',admin_routes);
 
 app.get('/',(req:Request, res:Response)=>{
     console.log("first");
