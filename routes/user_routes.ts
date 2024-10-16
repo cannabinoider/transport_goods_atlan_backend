@@ -1,9 +1,11 @@
 import { Router } from "express";
-import {signup, login} from "../controllers/usercontroller";
+import usercontroller from "../controllers/usercontroller";
 
-const router =  Router();
+const router = Router();
 
-router.post('/signup',signup);
-router.post('/login',login);
+router.post("/signup", usercontroller.login);
+router.post("/login", usercontroller.signup);
+
+router.post("/booking", usercontroller.createBooking);
 
 export default router;
