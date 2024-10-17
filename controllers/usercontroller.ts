@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { createBookingService, createUser, getUserByUsername, loginByUsername } from "../services/userservice";
+import { createBookingService, createUser, getBookingsWithStatus, getUserByUsername, loginByUsername } from "../services/userservice";
 
 const signup = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { username, email, password, phone } = req.body;
@@ -42,11 +42,21 @@ const login = asyncHandler(async (req: Request, res: Response): Promise<void> =>
 const createBooking = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, graphhopper_response } = req.body;
     try {
-        const token = await createBookingService(good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, graphhopper_response);
-        res.status(200).send({ message: "login successfull", token });
+        await createBookingService(good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, graphhopper_response);
+        res.status(200).send({ message: "booking created successfully" });
     } catch (err: any) {
         res.status(500).send({ message: "Internal server error" });
     }
 });
 
-export default { login, signup, createBooking };
+const bookingStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId = parseInt(req.query.userId as string);
+        const bookings = await getBookingsWithStatus(userId);
+        res.status(200).send({ message: "successfull fetch", bookings });
+    } catch (err: any) {
+        res.status(500).send({ message: "Internal server error" });
+    }
+});
+
+export default { login, signup, createBooking, bookingStatus };

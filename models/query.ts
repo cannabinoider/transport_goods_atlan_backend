@@ -78,3 +78,11 @@ export const INSERT_BOOKING = `
     $1, $2, $3, $4, $5, $6, $7, $8, $9
   )
 `;
+
+export const FETCH_BOOKINGS_WITH_STATUS = `
+  SELECT b.*, bvr.*, lt.* 
+  FROM booking b
+  JOIN booking_vehicle_relation bvr ON b.id = bvr.booking_id
+  JOIN location_track lt ON b.id = lt.booking_id
+  WHERE b.user_id = $1
+`;
