@@ -21,7 +21,7 @@ export async function getUserByUsername(username: string): Promise<{ existingUse
     try {
         const result = await fetchUserByUsername(username);
         if (result.rows.length > 0) {
-            return { existingUser: true, message: "Username already exists!" };
+            return { existingUser: true, message: "Username already exists!" };  
         }
         return { existingUser: false, message: "" };
     } catch (error) {
@@ -29,24 +29,42 @@ export async function getUserByUsername(username: string): Promise<{ existingUse
     }
 }
 
-export async function loginByUsername(username: string, password: string): Promise<any> {
+export async function loginByUsername(username: string, password: string): Promise<any> { 
     try {
         const userResult = await fetchUserByUsername(username);
+        console.log("respp",userResult); 
         const user = userResult.rows[0];
+
         if (!user) {
-            throw new Error("user not found");
+            throw new Error("User not found");  
         }
+
         if (user.role !== "user") {
-            throw new Error("User role not matched");
+            throw new Error("User role not matched");  
         }
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);  
         if (!isPasswordValid) {
             throw new Error("Incorrect password");
         }
-        const token = jwt.sign({ userId: user.userid, role: user.role, userName: user.username, userEmail: user.email, userPhone: user.phone }, JWT_SECRET, {
-            expiresIn: "1h",
-        });
-        return { token };
+
+        const token = jwt.sign({
+            userId: user.user_id,  
+            role: user.role,
+            userName: user.username,
+            userEmail: user.email,
+            userPhone: user.phone
+        }, JWT_SECRET, { expiresIn: "1h" });
+        
+        return { 
+            token, 
+            user: {
+                userId: user.user_id,
+                userName: user.username,
+                userEmail: user.email,
+                userPhone: user.phone
+            } 
+        };
     } catch (error: any) {
         throw new Error(error.message);
     }

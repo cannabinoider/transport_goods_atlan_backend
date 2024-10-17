@@ -23,21 +23,27 @@ export const signup = asyncHandler(async (req: Request, res: Response): Promise<
 const login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
     console.log("data", req.body);
+    
     try {
-        const token = await loginByUsername(username, password);
-        res.status(201).send({ message: "login successfull", token });
+        const { token, driver } = await loginByUsername(username, password);
+        res.status(201).send({ 
+            message: "Login successful", 
+            token, 
+            driver 
+        });
     } catch (err: any) {
         if (err.message === "user not found") {
             res.status(404).send({ message: "User not found" });
         } else if (err.message === "Incorrect password") {
             res.status(401).send({ message: "Invalid Password" });
-        } else if (err.message === "User role not matched") {
+        } else if (err.message === "role mismatched") {
             res.status(402).send({ message: "Role mismatched" });
         } else {
             res.status(500).send({ message: "Internal server error" });
         }
     }
 });
+
 
 const getJobs = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     try {

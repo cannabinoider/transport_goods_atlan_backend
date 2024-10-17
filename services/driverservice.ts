@@ -42,14 +42,23 @@ export async function loginByUsername(username: string, password: string): Promi
         if (!isPasswordValid) {
             throw new Error("Incorrect password");
         }
-        const token = jwt.sign({ userId: user.userid, role: user.role, userName: user.username, userEmail: user.email, userPhone: user.phone }, JWT_SECRET, {
+        const token = jwt.sign({ userId: user.user_id, role: user.role, userName: user.username, userEmail: user.email, userPhone: user.phone }, JWT_SECRET, {
             expiresIn: "1h",
         });
-        return { token };
+        return { 
+            token, 
+            driver: {
+                userId: user.user_id,
+                userName: user.username,
+                userEmail: user.email,
+                userPhone: user.phone
+            } 
+        };
     } catch (error: any) {
         throw new Error(error.message);
     }
 }
+
 export async function getJobsService(): Promise<any> {
     try {
         const jobs = await fetchJobs();

@@ -22,17 +22,21 @@ const signup = asyncHandler(async (req: Request, res: Response): Promise<void> =
 
 const login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
-    console.log("data", res);
+
     try {
-        const token = await loginByUsername(username, password);
-        res.status(200).send({ message: "login successfull", token });
+        const { token, user } = await loginByUsername(username, password); 
+        res.status(200).send({
+            message: "Login successful",
+            token, 
+            user 
+        });
     } catch (err: any) {
-        if (err.message === "user not found") {
+        if (err.message === "User not found") {
             res.status(404).send({ message: "User not found" });
         } else if (err.message === "User role not matched") {
             res.status(402).send({ message: "Role mismatched" });
         } else if (err.message === "Incorrect password") {
-            res.status(401).send({ message: "Invalid Password" });
+            res.status(401).send({ message: "Invalid password" });
         } else {
             res.status(500).send({ message: "Internal server error" });
         }

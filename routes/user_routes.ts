@@ -3,8 +3,8 @@ import usercontroller from "../controllers/usercontroller";
 
 const router = Router();
 
-router.post("/signup", usercontroller.login);
-router.post("/login", usercontroller.signup);
+router.post("/signup", usercontroller.signup);
+router.post("/login", usercontroller.login);
 
 router.post("/booking", usercontroller.createBooking);
 
