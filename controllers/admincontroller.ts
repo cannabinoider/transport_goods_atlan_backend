@@ -66,7 +66,7 @@ const getDriverLocations = asyncHandler(async (req: Request, res: Response): Pro
 
     try {
         const vehicles = await fetchDriverLocationsService();
-        res.status(200).send({ message: "Vehicle updated successfully", vehicle: vehicles });
+        res.status(200).send({ message: "Driver locations updated successfully", vehicle: vehicles });
     } catch (err: any) {
         res.status(500).send({ message: "Internal server error", error: err.message });
     }
@@ -77,7 +77,7 @@ const getAllBookings = asyncHandler(async (req: Request, res: Response): Promise
 
     try {
         const vehicles = await getAllBookingsService();
-        res.status(200).send({ message: "Vehicle updated successfully", vehicle: vehicles });
+        res.status(200).send({ message: "all bookings fetched successfully", vehicle: vehicles });
     } catch (err: any) {
         res.status(500).send({ message: "Internal server error", error: err.message });
     }
