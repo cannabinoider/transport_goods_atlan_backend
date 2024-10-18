@@ -59,7 +59,7 @@ const acceptJob = asyncHandler(async (req: Request, res: Response): Promise<void
     const driverId = req.body.driverId;
     try {
         const jobs = await acceptJobService(bookingId, driverId);
-        res.status(201).send({ message: "login successfull", jobs });
+        res.status(201).send({ message: "accepted job", jobs });
     } catch (err: any) {
         res.status(500).send({ message: "Internal server error" });
     }
@@ -69,7 +69,7 @@ const getSelectedBooking = asyncHandler(async (req: Request, res: Response): Pro
     const driverId = parseInt(req.query.driverId as string);
     try {
         const jobs = await getSelectedBookingService(driverId);
-        res.status(201).send({ message: "login successfull", jobs });
+        res.status(201).send({ message: "selected job:", jobs });
     } catch (err: any) {
         res.status(500).send({ message: "Internal server error" });
     }
@@ -90,7 +90,7 @@ const updateStatus = asyncHandler(async (req: Request, res: Response): Promise<v
 
     try {
         const jobs = await updateStatusService(bookingId, status);
-        res.status(201).send({ message: "login successfull", jobs });
+        res.status(201).send({ message: "status updated", jobs });
     } catch (err: any) {
         res.status(500).send({ message: "Internal server error" });
     }

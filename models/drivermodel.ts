@@ -40,7 +40,8 @@ export function fetchJobs(): Promise<QueryResult<any>> {
 export async function acceptJob(bookingId: number, driverId: number): Promise<QueryResult<any>> {
     const vehicle = await pool.query(FETCH_VEHICLE_ID, [bookingId]);
 
-    const vehicleId = vehicle[0].id;
+    console.log(vehicle);
+    const vehicleId = vehicle.rows[0].vehicle_id;
 
     return new Promise((resolve, reject) => {
         pool.query(ACCEPT_JOB, [bookingId, vehicleId, driverId], (error: any, results: any) => {
@@ -59,7 +60,8 @@ export async function fetchSelectedBooking(driverId: number): Promise<QueryResul
             if (error) {
                 reject(error);
             } else {
-                resolve(results);
+                // console.log("1 ",results.rows);
+                resolve(results.rows);
             }
         });
     });

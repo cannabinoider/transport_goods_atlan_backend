@@ -72,13 +72,16 @@ export async function acceptJobService(bookingId: number, driverId: number): Pro
     try {
         await acceptJob(bookingId, driverId);
     } catch (error: any) {
+        console.log(error);
         throw new Error(error.message);
     }
 }
 
-export async function getSelectedBookingService(driverId: number): Promise<void> {
+export async function getSelectedBookingService(driverId: number): Promise<any> {
     try {
-        await fetchSelectedBooking(driverId);
+        const selectedBookings = await fetchSelectedBooking(driverId);
+        return selectedBookings;
+        // console.log("u :", selectedBookings);
     } catch (error: any) {
         throw new Error(error.message);
     }

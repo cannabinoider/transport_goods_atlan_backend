@@ -32,9 +32,9 @@ export const GET_ALL_JOBS = `
 `;
 
 export const FETCH_VEHICLE_ID = `
-  SELECT v.id 
+  SELECT v.vehicle_id 
   FROM vehicle v
-  JOIN booking b ON b.type = v.type
+  JOIN booking b ON b.vehicle_type = v.vehicle_type
   WHERE b.id = $1
   LIMIT 1
 `;
@@ -49,7 +49,7 @@ export const SELECTED_BOOKING = `
   FROM booking b
   JOIN booking_vehicle_relation bvr ON b.id = bvr.booking_id
   WHERE bvr.driver_id = $1 
-    AND b.status <> 'complete'
+    AND bvr.status <> 'complete'
 `;
 
 export const CURRENT_LOCATION = `
