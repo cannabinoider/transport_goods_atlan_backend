@@ -26,9 +26,9 @@ export function fetchUserByUsername(username: string): Promise<QueryResult<any>>
     });
 }
 
-export function insertBooking(good_weight: string, good_type: string, vehicle_type: string, pickup_location_address: string, pickup_geolocation: string, dropoff_geolocation: string, dropoff_location_address: string, payment_status: string, GHResponse: any): Promise<QueryResult<any>> {
+export function insertBooking(good_weight: string, good_type: string, userId: number, vehicle_type: string, pickup_location_address: string, pickup_geolocation: string, dropoff_geolocation: string, dropoff_location_address: string, payment_status: string, GHResponse: any): Promise<QueryResult<any>> {
     return new Promise((resolve, reject) => {
-        pool.query(INSERT_BOOKING, [good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, GHResponse], (error: any, results: any) => {
+        pool.query(INSERT_BOOKING, [good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, GHResponse, userId], (error: any, results: any) => {
             if (error) {
                 reject(error);
             } else {

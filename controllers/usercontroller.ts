@@ -44,9 +44,9 @@ const login = asyncHandler(async (req: Request, res: Response): Promise<void> =>
 });
 
 const createBooking = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const { good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, graphhopper_response } = req.body;
+    const { good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, graphhopper_response, userId } = req.body;
     try {
-        await createBookingService(good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, graphhopper_response);
+        await createBookingService(good_weight, good_type, userId, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, graphhopper_response);
         res.status(200).send({ message: "booking created successfully" });
     } catch (err: any) {
         res.status(500).send({ message: "Internal server error" });

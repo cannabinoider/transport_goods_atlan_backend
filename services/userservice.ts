@@ -74,10 +74,10 @@ export async function loginByUsername(username: string, password: string): Promi
     }
 }
 
-export async function createBookingService(good_weight: string, good_type: string, vehicle_type: string, pickup_location_address: string, pickup_geolocation: string, dropoff_geolocation: string, dropoff_location_address: string, payment_status: string, graphhopper_response: string): Promise<void> {
+export async function createBookingService(good_weight: string, good_type: string, userId: number, vehicle_type: string, pickup_location_address: string, pickup_geolocation: string, dropoff_geolocation: string, dropoff_location_address: string, payment_status: string, graphhopper_response: string): Promise<void> {
     try {
         const GHResponse = graphhopper_response;
-        await insertBooking(good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, GHResponse);
+        await insertBooking(good_weight, good_type, userId, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, GHResponse);
     } catch (error: any) {
         throw new Error(error.message);
     }

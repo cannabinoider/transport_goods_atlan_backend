@@ -73,9 +73,10 @@ export const INSERT_BOOKING = `
     dropoff_geolocation,
     dropoff_location_address,
     payment_status,
-    graphhopper_response
+    graphhopper_response,
+    userId
   ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9
+    $1, $2, $3, $4, $5, $6, $7, $8, $9,$10
   )
 `;
 
