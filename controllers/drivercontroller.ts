@@ -66,7 +66,7 @@ const acceptJob = asyncHandler(async (req: Request, res: Response): Promise<void
 });
 
 const getSelectedBooking = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const driverId = req.body.driverId;
+    const driverId = parseInt(req.query.driverId as string);
     try {
         const jobs = await getSelectedBookingService(driverId);
         res.status(201).send({ message: "login successfull", jobs });

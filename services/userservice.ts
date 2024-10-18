@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { insert_user, fetchUserByUsername, insertBooking } from "../models/usermodel";
+import { insert_user, fetchUserByUsername, insertBooking, getBookingWithStatus } from "../models/usermodel";
 
 const JWT_SECRET = process.env.JWT_SECRET || "chotahathi";
 
@@ -74,6 +74,14 @@ export async function createBookingService(good_weight: string, good_type: strin
     try {
         const GHRespons = JSON.parse(graphhopper_response);
         await insertBooking(good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, GHRespons);
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
+export async function getBookingsWithStatus(userId: number): Promise<any> {
+    try {
+        return await getBookingWithStatus(userId);
     } catch (error: any) {
         throw new Error(error.message);
     }
