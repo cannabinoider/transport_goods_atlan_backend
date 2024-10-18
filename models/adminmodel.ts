@@ -1,6 +1,6 @@
 import { error } from "console";
 import pool from "../db";
-import { FETCH_LOCATIONS, GET_USER_BY_USERNAME, GET_VEHICLES, INSERT_VEHICLE, UPDATE_VEHICLE } from "./query";
+import { FETCH_ALL_BOOKINGS, FETCH_LOCATIONS, GET_USER_BY_USERNAME, GET_VEHICLES, INSERT_VEHICLE, UPDATE_VEHICLE } from "./query";
 import { QueryResult } from "pg";
 
 export function fetchUserByUsername(username: string): Promise<QueryResult<any>> {
@@ -52,6 +52,18 @@ export function update_vehicle(vehicle_type: string, name: string, vehicle_statu
 export function fetchDriverLocations(): Promise<QueryResult<any>> {
     return new Promise((resolve, reject) => {
         pool.query(FETCH_LOCATIONS, [], (error: any, results: any) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+export function fetchAllBookings(): Promise<QueryResult<any>> {
+    return new Promise((resolve, reject) => {
+        pool.query(FETCH_ALL_BOOKINGS, [], (error: any, results: any) => {
             if (error) {
                 reject(error);
             } else {

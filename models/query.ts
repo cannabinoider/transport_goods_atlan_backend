@@ -94,3 +94,9 @@ export const FETCH_LOCATIONS = `
   LEFT JOIN location_track lt ON b.id = lt.booking_id
   where bvr.status <> 'complete'
 `;
+
+export const FETCH_ALL_BOOKINGS = `
+  SELECT b.*, u.* 
+  FROM booking b
+  JOIN users u ON u.user_id = b.user_id
+`;

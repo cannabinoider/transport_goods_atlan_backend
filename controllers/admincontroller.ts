@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { loginByUsername, insertVehicle, fetchAllVehicles, updateVehicles, fetchDriverLocationsService } from "../services/adminservice";
+import { loginByUsername, insertVehicle, fetchAllVehicles, updateVehicles, fetchDriverLocationsService, getAllBookingsService } from "../services/adminservice";
 
 const login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
@@ -72,4 +72,15 @@ const getDriverLocations = asyncHandler(async (req: Request, res: Response): Pro
     }
 });
 
-export default { login, insertVehicleController, getAllVehicles, updateVehicleController, getDriverLocations };
+const getAllBookings = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { token, vehicle_type, name, vehicle_status, vehicle_id } = req.body;
+
+    try {
+        const vehicles = await getAllBookingsService();
+        res.status(200).send({ message: "Vehicle updated successfully", vehicle: vehicles });
+    } catch (err: any) {
+        res.status(500).send({ message: "Internal server error", error: err.message });
+    }
+});
+
+export default { login, insertVehicleController, getAllVehicles, updateVehicleController, getDriverLocations, getAllBookings };

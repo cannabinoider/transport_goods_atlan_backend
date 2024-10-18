@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { fetchDriverLocations, fetchUserByUsername, get_all_vehicles, insert_vehicle, update_vehicle } from "../models/adminmodel";
+import { fetchAllBookings, fetchDriverLocations, fetchUserByUsername, get_all_vehicles, insert_vehicle, update_vehicle } from "../models/adminmodel";
 
 const JWT_SECRET = process.env.JWT_SECRET || "chotahathi";
 
@@ -89,6 +89,14 @@ export async function updateVehicles(token: string, vehicle_type: string, name: 
 export async function fetchDriverLocationsService(): Promise<any> {
     try {
         const result = await fetchDriverLocations();
+        return result.rows;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+export async function getAllBookingsService(): Promise<any> {
+    try {
+        const result = await fetchAllBookings();
         return result.rows;
     } catch (error: any) {
         throw new Error(error.message);
