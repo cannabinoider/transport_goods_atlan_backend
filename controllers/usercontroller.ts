@@ -24,11 +24,11 @@ const login = asyncHandler(async (req: Request, res: Response): Promise<void> =>
     const { username, password } = req.body;
 
     try {
-        const { token, user } = await loginByUsername(username, password); 
+        const { token, user } = await loginByUsername(username, password);
         res.status(200).send({
             message: "Login successful",
-            token, 
-            user 
+            token,
+            user,
         });
     } catch (err: any) {
         if (err.message === "User not found") {

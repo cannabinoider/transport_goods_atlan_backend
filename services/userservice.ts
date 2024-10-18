@@ -21,7 +21,7 @@ export async function getUserByUsername(username: string): Promise<{ existingUse
     try {
         const result = await fetchUserByUsername(username);
         if (result.rows.length > 0) {
-            return { existingUser: true, message: "Username already exists!" };  
+            return { existingUser: true, message: "Username already exists!" };
         }
         return { existingUser: false, message: "" };
     } catch (error) {
@@ -29,41 +29,45 @@ export async function getUserByUsername(username: string): Promise<{ existingUse
     }
 }
 
-export async function loginByUsername(username: string, password: string): Promise<any> { 
+export async function loginByUsername(username: string, password: string): Promise<any> {
     try {
         const userResult = await fetchUserByUsername(username);
-        console.log("respp",userResult); 
+        console.log("respp", userResult);
         const user = userResult.rows[0];
 
         if (!user) {
-            throw new Error("User not found");  
+            throw new Error("User not found");
         }
 
         if (user.role !== "user") {
-            throw new Error("User role not matched");  
+            throw new Error("User role not matched");
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);  
+        const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             throw new Error("Incorrect password");
         }
 
-        const token = jwt.sign({
-            userId: user.user_id,  
-            role: user.role,
-            userName: user.username,
-            userEmail: user.email,
-            userPhone: user.phone
-        }, JWT_SECRET, { expiresIn: "1h" });
-        
-        return { 
-            token, 
+        const token = jwt.sign(
+            {
+                userId: user.user_id,
+                role: user.role,
+                userName: user.username,
+                userEmail: user.email,
+                userPhone: user.phone,
+            },
+            JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        return {
+            token,
             user: {
                 userId: user.user_id,
                 userName: user.username,
                 userEmail: user.email,
-                userPhone: user.phone
-            } 
+                userPhone: user.phone,
+            },
         };
     } catch (error: any) {
         throw new Error(error.message);
@@ -72,8 +76,8 @@ export async function loginByUsername(username: string, password: string): Promi
 
 export async function createBookingService(good_weight: string, good_type: string, vehicle_type: string, pickup_location_address: string, pickup_geolocation: string, dropoff_geolocation: string, dropoff_location_address: string, payment_status: string, graphhopper_response: string): Promise<void> {
     try {
-        const GHRespons = JSON.parse(graphhopper_response);
-        await insertBooking(good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, GHRespons);
+        const GHResponse = graphhopper_response;
+        await insertBooking(good_weight, good_type, vehicle_type, pickup_location_address, pickup_geolocation, dropoff_geolocation, dropoff_location_address, payment_status, GHResponse);
     } catch (error: any) {
         throw new Error(error.message);
     }

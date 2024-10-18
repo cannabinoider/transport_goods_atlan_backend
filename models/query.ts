@@ -83,6 +83,14 @@ export const FETCH_BOOKINGS_WITH_STATUS = `
   SELECT b.*, bvr.*, lt.* 
   FROM booking b
   JOIN booking_vehicle_relation bvr ON b.id = bvr.booking_id
-  JOIN location_track lt ON b.id = lt.booking_id
+  LEFT JOIN location_track lt ON b.id = lt.booking_id
   WHERE b.user_id = $1
+`;
+
+export const FETCH_LOCATIONS = `
+  SELECT b.*, bvr.*, lt.* 
+  FROM booking b
+  JOIN booking_vehicle_relation bvr ON b.id = bvr.booking_id
+  LEFT JOIN location_track lt ON b.id = lt.booking_id
+  where bvr.status <> 'complete'
 `;
